@@ -41,6 +41,6 @@ public class GameRules {
     }
 
     public static boolean isGameFinished(int value) {
-        return value == 3;
+        return value == 1;
     }
 }

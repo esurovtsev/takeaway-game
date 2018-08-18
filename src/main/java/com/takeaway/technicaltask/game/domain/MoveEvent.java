@@ -12,8 +12,8 @@ import lombok.experimental.Wither;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = MoveEvent.MoveEventBuilder.class)
 public class MoveEvent {
-    private final int value;
     private final Integer added;
+    private final int value;
     @Wither
     private final Boolean success;
     @Wither

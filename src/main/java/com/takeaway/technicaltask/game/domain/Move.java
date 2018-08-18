@@ -31,16 +31,12 @@ public class Move {
     }
 
     Move(int value, Integer added) {
-        if (value < 2) {
+        if (value < 1) {
             throw new ValidationException("Value should be more 2 or more");
         }
 
         this.value = value;
         this.added = added;
-    }
-
-    public boolean isFinished() {
-        return GameRules.isGameFinished(getValue());
     }
 
     public int getValue() {
@@ -57,7 +53,7 @@ public class Move {
     }
 
     public Move applyStep(int input) {
-        if (isFinished()) {
+        if (GameRules.isGameFinished(getValue())) {
             throw new ValidationException("Not possible to make a move. The game was finished already.");
         }
         GameRules.moveShouldBeInProperRangeAndResultDividedByThree(value, input);

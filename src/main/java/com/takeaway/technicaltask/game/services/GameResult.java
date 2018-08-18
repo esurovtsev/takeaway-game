@@ -12,6 +12,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameResult {
     private String status;
-    private Integer winningPLayer;
+    private Integer winningPlayer;
     private List<MoveEvent> moves;
 }

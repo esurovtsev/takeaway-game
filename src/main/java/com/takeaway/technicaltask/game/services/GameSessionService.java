@@ -46,7 +46,7 @@ public class GameSessionService {
                     .status(lastMove.getSuccess() && GameRules.isGameFinished(lastMove.getValue())
                             ? "Game was finished" : "Game was interrupted");
             if (GameRules.isGameFinished(lastMove.getValue())) {
-                result.winningPLayer(lastMove.getPlayer());
+                result.winningPlayer(lastMove.getPlayer());
             }
         }
 

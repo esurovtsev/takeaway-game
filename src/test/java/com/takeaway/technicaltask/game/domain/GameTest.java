@@ -78,13 +78,18 @@ public class GameTest {
     }
 
     @Test
+    public void test_lastMove() {
+        Game underTest = new Game(4);
+        Game game = underTest.makeMove(-1);
+    }
+
+    @Test
     public void toGameEvent() {
         Game move1 = new Game(56);
         Game move2 = move1.makeMove(1);
         GameEvent result = move2.toGameEvent(1);
         assertThat(result.getValue()).isEqualTo(19);
         assertThat(result.getAdded()).isEqualTo(1);
-        assertThat(result.getGameFinished()).isFalse();
     }
 
     @Test

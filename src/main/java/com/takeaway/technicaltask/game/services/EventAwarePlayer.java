@@ -4,4 +4,6 @@ import com.takeaway.technicaltask.game.domain.GameEvent;
 
 public interface EventAwarePlayer {
     GameEvent makeMove(GameEvent move);
+
+    int getPlayerNumber();
 }

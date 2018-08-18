@@ -40,7 +40,7 @@ public class Game {
     }
 
     public boolean isFinished() {
-        return value == 3;
+        return GameRules.isGameFinished(getValue());
     }
 
     public int getValue() {
@@ -66,7 +66,6 @@ public class Game {
                 .player(player)
                 .value(value)
                 .added(added)
-                .gameFinished(isFinished())
                 .success(true)
                 .build();
     }

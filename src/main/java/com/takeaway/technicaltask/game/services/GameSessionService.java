@@ -7,13 +7,16 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.takeaway.technicaltask.game.domain.GameEvent;
 import com.takeaway.technicaltask.game.domain.GameResult;
+import com.takeaway.technicaltask.game.domain.GameRules;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class GameSessionService {
@@ -31,7 +34,7 @@ public class GameSessionService {
         List<GameEvent> moves = makeAllMoves(initialValue);
         timer.stop();
 
-        GameResult.GameResultBuilder result = GameResult.builder().duration(timer.elapsed());
+        GameResult.GameResultBuilder result = GameResult.builder();
         if (moves.isEmpty()) {
             result
                     .moves(ImmutableList.of())
@@ -41,9 +44,9 @@ public class GameSessionService {
             GameEvent lastMove = Iterables.getLast(moves);
             result
                     .moves(moves)
-                    .status(lastMove.getSuccess() && lastMove.getGameFinished()
+                    .status(lastMove.getSuccess() && GameRules.isGameFinished(lastMove.getValue())
                             ? "Game was finished" : "Game was interrupted");
-            if (lastMove.getGameFinished() && lastMove.getPlayer() != null) {
+            if (GameRules.isGameFinished(lastMove.getValue())) {
                 result.winningPLayer(lastMove.getPlayer());
             }
         }
@@ -53,13 +56,23 @@ public class GameSessionService {
 
     private List<GameEvent> makeAllMoves(int initialValue) {
         List<GameEvent> result = Lists.newArrayList();
-        Iterator<EventAwarePlayer> players = Iterators.cycle(localPlayer, remotePlayer);
-        GameEvent move = GameEvent.builder().value(initialValue).build();
+
+        GameEvent move = GameEvent.builder()
+                .value(initialValue)
+                .player(localPlayer.getPlayerNumber())
+                .build();
+        log.debug("PLayer {} starts with new move {}", localPlayer.getClass().getSimpleName(), move);
+        result.add(move);
+
+        Iterator<EventAwarePlayer> players = Iterators.cycle(remotePlayer, localPlayer);
+
 
         while (move != null) {
-            move = players.next().makeMove(move);
+            EventAwarePlayer player = players.next();
+            log.debug("PLayer {} gets move {} to process", player.getClass().getSimpleName(), move);
+            move = player.makeMove(move);
             result.add(move);
-            if (!move.getSuccess() || move.getGameFinished()) {
+            if (!move.getSuccess() || GameRules.isGameFinished(move.getValue())) {
                 move = null;
             }
         }

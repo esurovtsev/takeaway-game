@@ -39,4 +39,8 @@ public class GameRules {
     IntStream possibleMoves() {
         return IntStream.range(minMove, maxMove + 1);
     }
+
+    public static boolean isGameFinished(int value) {
+        return value == 3;
+    }
 }

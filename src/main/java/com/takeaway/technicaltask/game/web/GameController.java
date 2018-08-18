@@ -1,11 +1,13 @@
 package com.takeaway.technicaltask.game.web;
 
 import com.takeaway.technicaltask.game.domain.GameEvent;
+import com.takeaway.technicaltask.game.domain.GameResult;
 import com.takeaway.technicaltask.game.services.GameSessionService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +29,7 @@ public class GameController {
      *
      */
     @GetMapping("/play")
-    public GameResultDto play() {
+    public GameResult play() {
         return play(ThreadLocalRandom.current().nextInt(2, 1000));
     }
 
@@ -38,8 +40,8 @@ public class GameController {
      * @return JSON representation of the game result once game will be finished.
      */
     @GetMapping("/play/{initialValue}")
-    public GameResultDto play(int initialValue) {
-        return GameResultDto.fromGameResult(gameSessionService.playNewGame(initialValue));
+    public GameResult play(@PathVariable("initialValue") int initialValue) {
+        return gameSessionService.playNewGame(initialValue);
     }
 
     /***

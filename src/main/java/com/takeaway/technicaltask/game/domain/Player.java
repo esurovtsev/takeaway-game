@@ -6,18 +6,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Player {
-    public Move makeMove(@NonNull Move game) {
-        int move = calculateNextMove(game);
-        return game.makeMove(move);
+    public Move makeMove(@NonNull Move move) {
+        int stepValue = calculateNextStep(move);
+        return move.applyStep(stepValue);
     }
 
     @VisibleForTesting
-    int calculateNextMove(@NonNull Move game) {
+    int calculateNextStep(@NonNull Move move) {
         return GameRules
                 .possibleMoves()
-                .filter(possibleMove -> GameRules.isValidMove(game.getValue(), possibleMove))
+                .filter(possibleMove -> GameRules.isValidMove(move.getValue(), possibleMove))
                 .findAny()
                 .orElseThrow(() -> new ValidationException(
-                        String.format("Not possible to make a move for game value " + game.getValue())));
+                        String.format("Not possible to make a move for game value " + move.getValue())));
     }
 }

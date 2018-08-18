@@ -56,7 +56,7 @@ public class Move {
         return new Move(event.getValue(), event.getAdded());
     }
 
-    public Move makeMove(int input) {
+    public Move applyStep(int input) {
         if (isFinished()) {
             throw new ValidationException("Not possible to make a move. The game was finished already.");
         }

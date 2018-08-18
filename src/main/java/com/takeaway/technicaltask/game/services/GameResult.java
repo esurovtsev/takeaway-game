@@ -1,6 +1,7 @@
-package com.takeaway.technicaltask.game.domain;
+package com.takeaway.technicaltask.game.services;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.takeaway.technicaltask.game.domain.MoveEvent;
 import lombok.Builder;
 import lombok.Value;
 
@@ -12,5 +13,5 @@ import java.util.List;
 public class GameResult {
     private String status;
     private Integer winningPLayer;
-    private List<GameEvent> moves;
+    private List<MoveEvent> moves;
 }

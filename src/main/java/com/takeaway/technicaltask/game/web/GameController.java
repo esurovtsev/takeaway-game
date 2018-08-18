@@ -1,7 +1,7 @@
 package com.takeaway.technicaltask.game.web;
 
-import com.takeaway.technicaltask.game.domain.GameEvent;
-import com.takeaway.technicaltask.game.domain.GameResult;
+import com.takeaway.technicaltask.game.domain.MoveEvent;
+import com.takeaway.technicaltask.game.services.GameResult;
 import com.takeaway.technicaltask.game.services.GameSessionService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class GameController {
      * @return updated GameEvent with the move made by the Player.
      */
     @PostMapping(value = Routes.MAKE_MOVE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public GameEvent makeMove(@RequestBody GameEvent event) {
+    public MoveEvent makeMove(@RequestBody MoveEvent event) {
         return gameSessionService.makeLocalMove(event);
     }
 }

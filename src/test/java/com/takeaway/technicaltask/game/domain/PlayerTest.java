@@ -8,7 +8,7 @@ public class PlayerTest {
 
     @Test
     public void calculateNextMove_plusOne() {
-        Game game = new Game(56);
+        Move game = new Move(56);
         Player underTest = new Player();
         assertThat(underTest.calculateNextMove(game)).isEqualTo(1);
 
@@ -16,7 +16,7 @@ public class PlayerTest {
 
     @Test
     public void calculateNextMove_zero() {
-        Game game = new Game(57);
+        Move game = new Move(57);
         Player underTest = new Player();
         assertThat(underTest.calculateNextMove(game)).isEqualTo(0);
 
@@ -24,16 +24,16 @@ public class PlayerTest {
 
     @Test
     public void calculateNextMove_minusOne() {
-        Game game = new Game(58);
+        Move game = new Move(58);
         Player underTest = new Player();
         assertThat(underTest.calculateNextMove(game)).isEqualTo(-1);
     }
 
     @Test
     public void makeMove() {
-        Game game = new Game(58, 0);
+        Move game = new Move(58, 0);
         Player underTest = new Player();
-        Game nextMove = underTest.makeMove(game);
+        Move nextMove = underTest.makeMove(game);
         assertThat(nextMove.getValue()).isEqualTo(19);
         assertThat(nextMove.getAdded()).isEqualTo(-1);
         assertThat(nextMove.isFinished()).isFalse();

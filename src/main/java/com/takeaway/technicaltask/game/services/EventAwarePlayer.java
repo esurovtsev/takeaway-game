@@ -1,9 +1,9 @@
 package com.takeaway.technicaltask.game.services;
 
-import com.takeaway.technicaltask.game.domain.GameEvent;
+import com.takeaway.technicaltask.game.domain.MoveEvent;
 
 public interface EventAwarePlayer {
-    GameEvent makeMove(GameEvent move);
+    MoveEvent makeMove(MoveEvent move);
 
     int getPlayerNumber();
 }

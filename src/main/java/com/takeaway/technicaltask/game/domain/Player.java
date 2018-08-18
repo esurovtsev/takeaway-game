@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Player {
-    public Game makeMove(@NonNull Game game) {
+    public Move makeMove(@NonNull Move game) {
         int move = calculateNextMove(game);
         return game.makeMove(move);
     }
 
     @VisibleForTesting
-    int calculateNextMove(@NonNull Game game) {
+    int calculateNextMove(@NonNull Move game) {
         return GameRules
                 .possibleMoves()
                 .filter(possibleMove -> GameRules.isValidMove(game.getValue(), possibleMove))

@@ -5,9 +5,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.takeaway.technicaltask.game.domain.GameEvent;
-import com.takeaway.technicaltask.game.domain.GameResult;
 import com.takeaway.technicaltask.game.domain.GameRules;
+import com.takeaway.technicaltask.game.domain.MoveEvent;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +24,13 @@ public class GameSessionService {
     @NonNull
     private final RemoteEventAwarePlayer remotePlayer;
 
-    public GameEvent makeLocalMove(@NonNull GameEvent event) {
+    public MoveEvent makeLocalMove(@NonNull MoveEvent event) {
         return localPlayer.makeMove(event);
     }
 
     public GameResult playNewGame(int initialValue) {
         Stopwatch timer = Stopwatch.createStarted();
-        List<GameEvent> moves = makeAllMoves(initialValue);
+        List<MoveEvent> moves = makeAllMoves(initialValue);
         timer.stop();
 
         GameResult.GameResultBuilder result = GameResult.builder();
@@ -41,7 +40,7 @@ public class GameSessionService {
                     .status("Game was not started");
 
         } else {
-            GameEvent lastMove = Iterables.getLast(moves);
+            MoveEvent lastMove = Iterables.getLast(moves);
             result
                     .moves(moves)
                     .status(lastMove.getSuccess() && GameRules.isGameFinished(lastMove.getValue())
@@ -54,10 +53,10 @@ public class GameSessionService {
         return result.build();
     }
 
-    private List<GameEvent> makeAllMoves(int initialValue) {
-        List<GameEvent> result = Lists.newArrayList();
+    private List<MoveEvent> makeAllMoves(int initialValue) {
+        List<MoveEvent> result = Lists.newArrayList();
 
-        GameEvent move = GameEvent.builder()
+        MoveEvent move = MoveEvent.builder()
                 .value(initialValue)
                 .player(localPlayer.getPlayerNumber())
                 .build();

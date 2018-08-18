@@ -10,8 +10,8 @@ import lombok.experimental.Wither;
 @Value
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonDeserialize(builder = GameEvent.GameEventBuilder.class)
-public class GameEvent {
+@JsonDeserialize(builder = MoveEvent.MoveEventBuilder.class)
+public class MoveEvent {
     private final int value;
     private final Integer added;
     @Wither
@@ -20,6 +20,6 @@ public class GameEvent {
     private final int player;
 
     @JsonPOJOBuilder(withPrefix = "")
-    public static class GameEventBuilder {
+    public static class MoveEventBuilder {
     }
 }

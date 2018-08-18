@@ -19,18 +19,18 @@ import lombok.NonNull;
  *
  *     do not use reactive programmimg such as Flux or Reactive
  */
-public class Game {
+public class Move {
     private int value;
     private Integer added;
 
     /***
      * @param value current value of the game. Based on rules should be 2 or more
      */
-    Game(int value) {
+    Move(int value) {
         this(value, null);
     }
 
-    Game(int value, Integer added) {
+    Move(int value, Integer added) {
         if (value < 2) {
             throw new ValidationException("Value should be more 2 or more");
         }
@@ -52,25 +52,25 @@ public class Game {
         return added;
     }
 
-    public Game makeMove(int input) {
+    public static Move fromEvent(@NonNull MoveEvent event) {
+        return new Move(event.getValue(), event.getAdded());
+    }
+
+    public Move makeMove(int input) {
         if (isFinished()) {
             throw new ValidationException("Not possible to make a move. The game was finished already.");
         }
         GameRules.moveShouldBeInProperRangeAndResultDividedByThree(value, input);
 
-        return new Game((value + input) / 3, input);
+        return new Move((value + input) / 3, input);
     }
 
-    public GameEvent toGameEvent(int player) {
-        return GameEvent.builder()
+    public MoveEvent toGameEvent(int player) {
+        return MoveEvent.builder()
                 .player(player)
                 .value(value)
                 .added(added)
                 .success(true)
                 .build();
-    }
-
-    public static Game fromEvent(@NonNull GameEvent event) {
-        return new Game(event.getValue(), event.getAdded());
     }
 }

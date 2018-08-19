@@ -1,6 +1,6 @@
 package com.takeaway.technicaltask.game.services;
 
-import com.takeaway.technicaltask.game.domain.Move;
+import com.takeaway.technicaltask.game.domain.GameEvent;
 import com.takeaway.technicaltask.game.domain.Player;
 import com.takeaway.technicaltask.game.domain.ValidationException;
 import lombok.NonNull;
@@ -16,9 +16,9 @@ public class LocalEventAwarePlayer implements EventAwarePlayer{
     private final Player player;
 
     @Override
-    public Move.Event makeMove(@NonNull Move.Event event) {
+    public GameEvent makeMove(@NonNull GameEvent event) {
         try {
-            Move.Event gameEvent = player
+            GameEvent gameEvent = player
                     .makeMove(event.getResult())
                     .toSuccessEvent(getPlayerNumber());
             return gameEvent;

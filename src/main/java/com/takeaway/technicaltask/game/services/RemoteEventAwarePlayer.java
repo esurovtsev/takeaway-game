@@ -1,6 +1,6 @@
 package com.takeaway.technicaltask.game.services;
 
-import com.takeaway.technicaltask.game.domain.Move;
+import com.takeaway.technicaltask.game.domain.GameEvent;
 import com.takeaway.technicaltask.game.web.Routes;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +20,9 @@ public class RemoteEventAwarePlayer implements EventAwarePlayer {
     private final RestTemplate restTemplate;
 
     @Override
-    public Move.Event makeMove(@NonNull Move.Event event) {
+    public GameEvent makeMove(@NonNull GameEvent event) {
         try {
-            Move.Event response = restTemplate.postForObject(opponentApiHost + Routes.MAKE_MOVE, event, Move.Event.class);
+            GameEvent response = restTemplate.postForObject(opponentApiHost + Routes.MAKE_MOVE, event, GameEvent.class);
             return response.withPlayer(getPlayerNumber());
 
         } catch (RestClientException e) {

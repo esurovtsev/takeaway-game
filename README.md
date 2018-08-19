@@ -18,8 +18,8 @@ Here are some entities, terms and their meaning highly used across the applicati
 - **Result** - Current result of the *Game* at a certain time. Result is a whole number and is part of *Move* and 
 *GameEvent*.
 - **Added** - A value (-1, 0 or +1) applied by last *Player* to the *Result* on every *Move* based on rules of the *Game*. 
-Probably better term could be move or step but for keeping consistency with the test task description. *Added* is part 
-of *Move* and *GameEvent*.
+Probably better term could be move or step but for keeping consistency with the test task description we leave it as added. 
+*Added* is part of *Move* and *GameEvent*.
 - **Game Session** - A service responsible for supporting game process. Can start and finish a *Game* by a request or 
 ask a *Player* to respond in a remote *Game* (when current component is not responsible for starting a *Game*) (see
 ```com.takeaway.technicaltask.game.services.GameSession```).

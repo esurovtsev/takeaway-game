@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 import java.util.Iterator;
 import java.util.List;
 
+/***
+ * A service responsible for supporting game process. Can start and finish a game by a request or ask a Player to
+ * respond in a remote game.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

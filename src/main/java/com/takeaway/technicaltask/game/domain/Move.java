@@ -1,8 +1,13 @@
 package com.takeaway.technicaltask.game.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /***
  * Simple Value Object which keeps information about current move.
  */
+@ToString
+@EqualsAndHashCode
 public class Move {
     private int result;
     private int added;

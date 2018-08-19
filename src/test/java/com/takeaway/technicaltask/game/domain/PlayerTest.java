@@ -1,130 +1,71 @@
 package com.takeaway.technicaltask.game.domain;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 public class PlayerTest {
+    private Player underTest;
 
-//    @Test
-//    public void calculateNextMove_plusOne() {
-//        Move game = new Move(56);
-//        Player underTest = new Player();
-//        assertThat(underTest.calculateNextStep(game)).isEqualTo(1);
-//
-//    }
-//
-//    @Test
-//    public void calculateNextMove_zero() {
-//        Move game = new Move(57);
-//        Player underTest = new Player();
-//        assertThat(underTest.calculateNextStep(game)).isEqualTo(0);
-//
-//    }
-//
-//    @Test
-//    public void calculateNextMove_minusOne() {
-//        Move game = new Move(58);
-//        Player underTest = new Player();
-//        assertThat(underTest.calculateNextStep(game)).isEqualTo(-1);
-//    }
-//
-//    @Test
-//    public void makeMove() {
-//        Move game = new Move(58, 0);
-//        Player underTest = new Player();
-//        Move nextMove = underTest.makeMove(game);
-//        assertThat(nextMove.getValue()).isEqualTo(19);
-//        assertThat(nextMove.getAdded()).isEqualTo(-1);
-////        assertThat(nextMove.isFinished()).isFalse();
-//    }
+    @Before
+    public void before() {
+        underTest = new Player();
+    }
 
-    //    @Test
-//    public void start_incorrectInitialValue() {
-//        assertThatThrownBy(() -> new Move(-1, 0)).isInstanceOf(ValidationException.class);
-//        assertThatThrownBy(() -> new Move(0, 0)).isInstanceOf(ValidationException.class);
-//        assertThatThrownBy(() -> new Move(1, 0)).isInstanceOf(ValidationException.class);
-//    }
+    @Test
+    public void applyMove_correct() {
+        Move expected = new Move(19, 1);
+        assertThat(underTest.applyMove(56, 1)).isEqualTo(expected);
+    }
 
-//    @Test
-//    public void isFinished_correctAndFinished() {
-//        Move move1 = new Move(9, 0);
-//        Move move2 = move1.applyStep(0);
-//        assertThat(move2.isFinished()).isTrue();
-//    }
-//
-//    @Test
-//    public void isFinished_correctAndNotFinished() {
-//        Move underTest = new Move(6, 0);
-//        assertThat(underTest.isFinished()).isFalse();
-//    }
-//
-//    @Test
-//    public void isFinished_valueNotMultipliedByThree() {
-//        Move underTest = new Move(5, 0);
-//        assertThat(underTest.isFinished()).isFalse();
-//    }
+    @Test
+    public void applyMove_gameWasFinished() {
+        assertThatThrownBy(() -> underTest.applyMove(1, 0)).isInstanceOf(ValidationException.class);
+    }
 
-//    @Test
-//    public void makeMove_moveValueTooSmall() {
-//        Move underTest = new Move(57, 0);
-//        assertThatThrownBy(() -> underTest.applyStep(-3)).isInstanceOf(ValidationException.class);
-//    }
-//
-//    @Test
-//    public void makeMove_moveValueTooHigh() {
-//        Move underTest = new Move(57, 0);
-//        assertThatThrownBy(() -> underTest.applyStep(3)).isInstanceOf(ValidationException.class);
-//    }
-//
-//    @Test
-//    public void makeMove_valueDoesNotDivideByThree() {
-//        Move underTest = new Move(57, 0);
-//        assertThatThrownBy(() -> underTest.applyStep(1)).isInstanceOf(ValidationException.class);
-//    }
-//
-//    @Test
-//    public void makeMove_returnNewValue() {
-//        Move move1 = new Move(56, 0);
-//
-//        Move move2 = move1.applyStep(1);
-//        assertThat(move2.getValue()).isEqualTo(19);
-//
-//        Move move3 = move2.applyStep(-1);
-//        assertThat(move3.getValue()).isEqualTo(6);
-//    }
-//
-//    @Test
-//    public void makeMove_notPossiblePlayFinishedGame() {
-//        Move move1 = new Move(6, 0);
-//        Move move2 = move1.applyStep(0);
-//        assertThatThrownBy(() -> move2.applyStep(0)).isInstanceOf(ValidationException.class);
-//    }
-//
-//    @Test
-//    public void makeMove_savesPreviousValue() {
-//        Move move1 = new Move(56);
-//        Move move2 = move1.applyStep(1);
-//        assertThat(move2.getValue()).isEqualTo(19);
-//        assertThat(move2.getAdded()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    public void test_lastMove() {
-//        Move underTest = new Move(4);
-//        Move game = underTest.applyStep(-1);
-//    }
-//
-//    @Test
-//    public void toGameEvent() {
-//        Move move1 = new Move(56);
-//        Move move2 = move1.applyStep(1);
-//        MoveEvent result = move2.toGameEvent(1);
-//        assertThat(result.getValue()).isEqualTo(19);
-//        assertThat(result.getAdded()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    public void fromEvent() {
-//        MoveEvent event = MoveEvent.builder().value(19).build();
-//        Move underTest = Move.fromEvent(event);
-//
-//        assertThat(underTest.getValue()).isEqualTo(19);
-//    }
+    @Test
+    public void applyMove_resultIncorrect() {
+        assertThatThrownBy(() -> underTest.applyMove(0, 1)).isInstanceOf(ValidationException.class);
+    }
+
+    @Test
+    public void applyMove_addedInWrongRange() {
+        assertThatThrownBy(() -> underTest.applyMove(56, 2)).isInstanceOf(ValidationException.class);
+        assertThatThrownBy(() -> underTest.applyMove(56, -2)).isInstanceOf(ValidationException.class);
+    }
+
+    @Test
+    public void calculateAdded_plusOne() {
+        assertThat(underTest.calculateAdded(56)).isEqualTo(1);
+    }
+
+    @Test
+    public void calculateAdded_zero() {
+        assertThat(underTest.calculateAdded(57)).isEqualTo(0);
+    }
+
+    @Test
+    public void calculateAdded_minusOne() {
+        assertThat(underTest.calculateAdded(58)).isEqualTo(-1);
+    }
+
+    @Test
+    public void makeMove_plusOne() {
+        Move expected = new Move(19, 1);
+        assertThat(underTest.makeMove(56)).isEqualTo(expected);
+    }
+
+    @Test
+    public void makeMove_zero() {
+        Move expected = new Move(19, 0);
+        assertThat(underTest.makeMove(57)).isEqualTo(expected);
+    }
+
+    @Test
+    public void makeMove_minusOne() {
+        Move expected = new Move(19, -1);
+        assertThat(underTest.makeMove(58)).isEqualTo(expected);
+    }
 }

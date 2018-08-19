@@ -7,6 +7,9 @@ import lombok.Value;
 
 import java.util.List;
 
+/***
+ * A simple POJO to return results of the game back to caller (usually to render as a response in browser)
+ */
 @Value
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)

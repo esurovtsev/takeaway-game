@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Player {
     /***
-     * Proposes a new move in the Game based on given current Result/State of the game.
+     * Proposes a new move in the Game based on given current Result/State of the game. Contains all Player's related
+     * business logic.
      */
     public Move makeMove(int result) {
         GameRules.resultShouldBeCorrect(result);

@@ -19,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameSessionService {
     @NonNull
-    private final LocalEventAwarePlayer localPlayer;
+    private final LocalPlayer localPlayer;
     @NonNull
-    private final RemoteEventAwarePlayer remotePlayer;
+    private final RemotePlayer remotePlayer;
 
     public GameEvent makeLocalMove(@NonNull GameEvent event) {
         return localPlayer.makeMove(event);
@@ -61,11 +61,11 @@ public class GameSessionService {
         log.debug("PLayer {} starts with new move {}", localPlayer.getClass().getSimpleName(), move);
         result.add(move);
 
-        Iterator<EventAwarePlayer> players = Iterators.cycle(remotePlayer, localPlayer);
+        Iterator<ContextAwarePlayer> players = Iterators.cycle(remotePlayer, localPlayer);
 
 
         while (move != null) {
-            EventAwarePlayer player = players.next();
+            ContextAwarePlayer player = players.next();
             log.debug("PLayer {} gets move {} to process", player.getClass().getSimpleName(), move);
             move = player.makeMove(move);
             result.add(move);

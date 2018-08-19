@@ -10,10 +10,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+/***
+ * RemotePlayer is a representation of a remote PLayer sitting on another service. The class knows how to
+ * communicate with remote server and obtain another's Player move from it.
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RemoteEventAwarePlayer implements EventAwarePlayer {
+public class RemotePlayer implements ContextAwarePlayer {
     @Value("${application.opponentApiHost}")
     private String opponentApiHost;
     @NonNull

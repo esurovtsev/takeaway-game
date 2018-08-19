@@ -1,7 +1,14 @@
 package com.takeaway.technicaltask.game.domain;
 
-import com.google.common.annotations.VisibleForTesting;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.Value;
+import lombok.experimental.Wither;
+
+import java.util.Optional;
 
 /***
  * Entity represents a Game and is responsible for keeping current game state. Such as players, who is active player
@@ -20,53 +27,51 @@ import lombok.NonNull;
  *     do not use reactive programmimg such as Flux or Reactive
  */
 public class Move {
-    private int value;
-    private Integer added;
+    private int result;
+    private Optional<Integer> added;
 
-    /***
-     * @param value current value of the game. Based on rules should be 2 or more
-     */
-    Move(int value) {
-        this(value, null);
+    public Move(int result) {
+        this(result, null);
     }
 
-    Move(int value, Integer added) {
-        if (value < 1) {
-            throw new ValidationException("Value should be more 2 or more");
+    public Move(int result, Integer added) {
+        GameRules.resultShouldBeCorrect(result);
+        if (added != null) {
+            GameRules.addedShouldBeInProperRange(added);
         }
 
-        this.value = value;
-        this.added = added;
+        this.result = result;
+        this.added = Optional.ofNullable(added);
     }
 
-    public int getValue() {
-        return value;
+    public static Move fromEvent(@NonNull Event event) {
+        return new Move(event.getResult(), event.getAdded());
     }
 
-    @VisibleForTesting
-    Integer getAdded() {
-        return added;
-    }
 
-    public static Move fromEvent(@NonNull MoveEvent event) {
-        return new Move(event.getValue(), event.getAdded());
-    }
-
-    public Move applyStep(int input) {
-        if (GameRules.isGameFinished(getValue())) {
-            throw new ValidationException("Not possible to make a move. The game was finished already.");
-        }
-        GameRules.moveShouldBeInProperRangeAndResultDividedByThree(value, input);
-
-        return new Move((value + input) / 3, input);
-    }
-
-    public MoveEvent toGameEvent(int player) {
-        return MoveEvent.builder()
+    public Event toSuccessEvent(int player) {
+        return Event.builder()
                 .player(player)
-                .value(value)
-                .added(added)
+                .result(result)
+                .added(added.orElse(null))
                 .success(true)
                 .build();
+    }
+
+    @Value
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonDeserialize(builder = Event.EventBuilder.class)
+    public static class Event {
+        private final Integer added;
+        private final int result;
+        @Wither
+        private final Boolean success;
+        @Wither
+        private final int player;
+
+        @JsonPOJOBuilder(withPrefix = "")
+        public static class EventBuilder {
+        }
     }
 }

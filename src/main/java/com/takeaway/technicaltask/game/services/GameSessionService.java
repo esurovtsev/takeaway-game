@@ -6,7 +6,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.takeaway.technicaltask.game.domain.GameRules;
-import com.takeaway.technicaltask.game.domain.MoveEvent;
+import com.takeaway.technicaltask.game.domain.Move;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +24,13 @@ public class GameSessionService {
     @NonNull
     private final RemoteEventAwarePlayer remotePlayer;
 
-    public MoveEvent makeLocalMove(@NonNull MoveEvent event) {
+    public Move.Event makeLocalMove(@NonNull Move.Event event) {
         return localPlayer.makeMove(event);
     }
 
     public GameResult playNewGame(int initialValue) {
         Stopwatch timer = Stopwatch.createStarted();
-        List<MoveEvent> moves = makeAllMoves(initialValue);
+        List<Move.Event> moves = makeAllMoves(initialValue);
         timer.stop();
 
         GameResult.GameResultBuilder result = GameResult.builder();
@@ -40,12 +40,12 @@ public class GameSessionService {
                     .status("Game was not started");
 
         } else {
-            MoveEvent lastMove = Iterables.getLast(moves);
+            Move.Event lastMove = Iterables.getLast(moves);
             result
                     .moves(moves)
-                    .status(lastMove.getSuccess() && GameRules.isGameFinished(lastMove.getValue())
-                            ? "Game was finished" : "Game was interrupted");
-            if (GameRules.isGameFinished(lastMove.getValue())) {
+                    .status(lastMove.getSuccess() && GameRules.isGameFinished(lastMove.getResult())
+                            ? "WIN!!!" : "FAILED!");
+            if (GameRules.isGameFinished(lastMove.getResult())) {
                 result.winningPlayer(lastMove.getPlayer());
             }
         }
@@ -53,11 +53,11 @@ public class GameSessionService {
         return result.build();
     }
 
-    private List<MoveEvent> makeAllMoves(int initialValue) {
-        List<MoveEvent> result = Lists.newArrayList();
+    private List<Move.Event> makeAllMoves(int initialValue) {
+        List<Move.Event> result = Lists.newArrayList();
 
-        MoveEvent move = MoveEvent.builder()
-                .value(initialValue)
+        Move.Event move = Move.Event.builder()
+                .result(initialValue)
                 .player(localPlayer.getPlayerNumber())
                 .build();
         log.debug("PLayer {} starts with new move {}", localPlayer.getClass().getSimpleName(), move);
@@ -71,7 +71,7 @@ public class GameSessionService {
             log.debug("PLayer {} gets move {} to process", player.getClass().getSimpleName(), move);
             move = player.makeMove(move);
             result.add(move);
-            if (!move.getSuccess() || GameRules.isGameFinished(move.getValue())) {
+            if (!move.getSuccess() || GameRules.isGameFinished(move.getResult())) {
                 move = null;
             }
         }

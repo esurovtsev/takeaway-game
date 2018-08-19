@@ -2,7 +2,7 @@ package com.takeaway.technicaltask.game.web;
 
 import com.takeaway.technicaltask.game.domain.GameEvent;
 import com.takeaway.technicaltask.game.services.GameResult;
-import com.takeaway.technicaltask.game.services.GameSessionService;
+import com.takeaway.technicaltask.game.services.GameSession;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class GameController {
     @NonNull
-    private final GameSessionService gameSessionService;
+    private final GameSession gameSession;
 
     /***
      * Start a new game request. This is blocking request which returns final results once game is finished.
@@ -41,7 +41,7 @@ public class GameController {
      */
     @GetMapping("/play/{initialValue}")
     public GameResult play(@PathVariable("initialValue") int initialValue) {
-        return gameSessionService.playNewGame(initialValue);
+        return gameSession.playNewGame(initialValue);
     }
 
     /***
@@ -52,6 +52,6 @@ public class GameController {
      */
     @PostMapping(value = Routes.MAKE_MOVE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public GameEvent makeMove(@RequestBody GameEvent event) {
-        return gameSessionService.makeLocalMove(event);
+        return gameSession.makeMoveBack(event);
     }
 }

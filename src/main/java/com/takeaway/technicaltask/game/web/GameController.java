@@ -21,12 +21,10 @@ public class GameController {
     private final GameSession gameSession;
 
     /***
-     * Start a new game request. This is blocking request which returns final results once game is finished.
-     * @return JSON representation of the game result once game will be finished.
+     * "Start a new game" request. This is blocking request which returns final results once the game is finished.
+     * The initial number which is used to start a game will be selected randomly from 2 to 1000.
      *
-     *
-     * it's get request in order to make it easier to run via browser
-     *
+     * Impl. Details: The method accepts a GET request in order to make it easy demonstrable from web browser.
      */
     @GetMapping("/play")
     public GameResult play() {
@@ -34,10 +32,10 @@ public class GameController {
     }
 
     /***
-     * Start a new game request. This is blocking request which returns final results once game is finished.
-     * @param initialValue A Parameter which defines initial value for a game. Put here zero if you want Player
-     *                     to decide on initial value.
-     * @return JSON representation of the game result once game will be finished.
+     * "Start a new game" request. This is blocking request which returns final results once the game is finished.
+     * The initial number which is used to start a game should be provided as a parameter.
+     *
+     * Impl. Details: The method accepts a GET request in order to make it easy demonstrable from web browser.
      */
     @GetMapping("/play/{initialValue}")
     public GameResult play(@PathVariable("initialValue") int initialValue) {

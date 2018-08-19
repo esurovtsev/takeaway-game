@@ -1,5 +1,6 @@
 package com.takeaway.technicaltask.game.services;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -36,7 +37,8 @@ public class GameSession {
         return GameResult.fromMoves(makeAllMoves(firstMove));
     }
 
-    private List<GameEvent> makeAllMoves(@NonNull GameEvent firstMove) {
+    @VisibleForTesting
+    List<GameEvent> makeAllMoves(@NonNull GameEvent firstMove) {
         List<GameEvent> result = Lists.newArrayList(firstMove);
         // localPlayer already made it's move by starting new game with firstMove, so next should go removePlayer
         Iterator<ContextAwarePlayer> players = Iterators.cycle(remotePlayer, localPlayer);

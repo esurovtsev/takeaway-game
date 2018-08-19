@@ -2,7 +2,7 @@
 
 ## Goal
 The Goal is to implement a game with two independent units - the players - communicating with each other using an "API".
-Each player should run on its own as an independent component. The application should be build with keeping concepts of
+Each player should run on its own as an independent component. The application should be built with keeping concepts of
 Domain Driven Design in mind, avoiding creating anemic domain model. Component should communicate via sending each other
 events. 
 

@@ -11,11 +11,11 @@ Here are some entities, terms and their meaning highly used across the applicati
 
 - **Game** - a process of passing and transforming *Result* between two players until *Result* becomes 1. In this case 
 *Game* finishes and the *Player* who reached 1 considered as a winning player.
-- **Player** - a domain entity representing player's knowledge about how to play and some logic for making game's moves 
+- **Player** - a domain entity representing player's knowledge about how to play and logic for making game's moves 
 (see ```com.takeaway.technicaltask.game.domain.Player```)
 - **Move** - a simple Value Object which keeps information about current move 
 (see ```com.takeaway.technicaltask.game.domain.Move```) in the *Game*.
-- **Result** - Current result of the *Game* at a specific time. Result is a whole number and is part of *Move* and 
+- **Result** - Current result of the *Game* at a certain time. Result is a whole number and is part of *Move* and 
 *GameEvent*.
 - **Added** - A value (-1, 0 or +1) applied by last *Player* to the *Result* on every *Move* based on rules of the *Game*. 
 Probably better term could be move or step but for keeping consistency with the test task description. *Added* is part 

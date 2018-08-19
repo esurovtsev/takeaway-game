@@ -5,27 +5,34 @@ import lombok.experimental.UtilityClass;
 import java.util.stream.IntStream;
 
 /**
- * The class is responsible for performing some Game's related validation. We extracted this logic from the Game Object
- * because these rules are being reused between several entities. All other validation rules for simplicity reasons are
- * kept inside Game.
+ * The utility class represents Game Specification and is responsible for performing Game's related validation.
+ * We extracted this logic into separate class because these rules are being reused between several entities.
  */
 @UtilityClass
 public class GameRules {
-    private int minAdded = -1;
-    private int maxAdded = 1;
+    private final static int MIN_ADDED = -1;
+    private final static int MAX_ADDED = 1;
 
+    /***
+     * Checks that a new move can be made with given Result and Added values. Throws {@link ValidationException} in case
+     * the move cannot be made.
+     */
     void resultShouldBeDividedByThree(int result, int added) {
+        GameRules.addedShouldBeInProperRange(added);
         if ((result + added) % 3 != 0) {
             throw new ValidationException("Result of the move should be divided by 3");
         }
     }
 
+    /***
+     * A replica for {@link #resultShouldBeDividedByThree(int, int)}. The only difference is this method does not throw
+     * any exceptions and return false in case the validation fails. Otherwise the method returns true.
+     *
+     * Impl. Details: In general from performance perspective it might be not a good idea to check validity by generating
+     * exceptions and catching them, but for simplicity of test solution we are using this approach here.
+     */
     boolean isValidMove(int result, int added) {
-        // in general it might not be a good way to check validity by generating exceptions, but simplicity of test solutuin
-        // we can use it here since we're still interesting in providing additional messages about what was wrong for
-        // our clients.
         try {
-            GameRules.addedShouldBeInProperRange(added);
             GameRules.resultShouldBeDividedByThree(result, added);
             return true;
 
@@ -34,22 +41,40 @@ public class GameRules {
         }
     }
 
+    /***
+     * Returns a range of all added values which in general (regardless of the current game result) theoretically could
+     * be used for making a new move.
+     */
     IntStream possibleAddedValues() {
-        return IntStream.range(minAdded, maxAdded + 1);
+        return IntStream.range(MIN_ADDED, MAX_ADDED + 1);
     }
 
-    public static boolean isGameFinished(int value) {
-        return value == 1;
+    /***
+     * Decides if a Game could be considered as finished having current result. Normally we're saying that game is
+     * finished when the result is 3 / 3 = 1
+     */
+    boolean isGameFinished(int result) {
+        return result == 1;
     }
 
-    public static void resultShouldBeCorrect(int result) {
+    /***
+     * Checks if provided value can be a correct Result/State of the game. Result could be correct if it is equal to 1
+     * (=game finished) or be a number which sum with one of possible added values {@link #possibleAddedValues()} gives
+     * another number which is divided by 3. Meaning a number >= 2 (2 + 1 = 3, 3 + 0 = 3, 4 - 1 = 3, etc). So the final
+     * correct range is [1..infinite)
+     */
+    void resultShouldBeCorrect(int result) {
         if (result < 1) {
             throw new ValidationException("Result should be more 2 or more");
         }
     }
 
-    public static void addedShouldBeInProperRange(int added) {
-        if (added < minAdded || added > maxAdded) {
+    /***
+     * Checks if provided input could be used as a Added value based on rules of the game, meaning if the value is in
+     * correct range.
+     */
+    void addedShouldBeInProperRange(int added) {
+        if (added < MIN_ADDED || added > MAX_ADDED) {
             throw new ValidationException("An added should be one of [-1,0,1]");
         }
     }

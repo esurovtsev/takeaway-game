@@ -1,6 +1,5 @@
 package com.takeaway.technicaltask.game.services;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -29,15 +28,13 @@ public class GameSessionService {
     }
 
     public GameResult playNewGame(int initialValue) {
-        Stopwatch timer = Stopwatch.createStarted();
         List<Move.Event> moves = makeAllMoves(initialValue);
-        timer.stop();
 
         GameResult.GameResultBuilder result = GameResult.builder();
         if (moves.isEmpty()) {
             result
                     .moves(ImmutableList.of())
-                    .status("Game was not started");
+                    .status("FAILED!");
 
         } else {
             Move.Event lastMove = Iterables.getLast(moves);
@@ -59,6 +56,7 @@ public class GameSessionService {
         Move.Event move = Move.Event.builder()
                 .result(initialValue)
                 .player(localPlayer.getPlayerNumber())
+                .success(true)
                 .build();
         log.debug("PLayer {} starts with new move {}", localPlayer.getClass().getSimpleName(), move);
         result.add(move);

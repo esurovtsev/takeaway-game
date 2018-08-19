@@ -7,7 +7,7 @@ Domain Driven Design in mind, avoiding creating anemic domain model. Component s
 events. 
 
 ## Dictionary
-Here are some entities, terms, and their meaning highly used across the application.
+Here are some entities, terms and their meaning highly used across the application.
 
 - **Game** - a process of passing and transforming *Result* between two players until *Result* becomes 1. In this case 
 *Game* finishes and the *Player* who reached 1 considered as a winning player.

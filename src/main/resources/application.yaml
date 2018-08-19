@@ -1,7 +1,7 @@
 server.port: ${port:8080}
 
 application:
-  opponentApiHost: ${opponent:"http://localhost:8081"}
+  opponentApiHost: ${opponent:"http://localhost:8080"}
 
 logging.level:
   com.takeaway.technicaltask.game: debug

@@ -16,7 +16,7 @@ import java.util.List;
 
 /***
  * A service responsible for supporting game process. Can start and finish a game by a request or ask a Player to
- * respond in a remote game.
+ * respond in a remote game (when current component is not responsible for starting a Game).
  */
 @Slf4j
 @Component

@@ -17,7 +17,7 @@ public class GameRules {
      * Checks that a new move can be made with given Result and Added values. Throws {@link ValidationException} in case
      * the move cannot be made.
      */
-    void resultShouldBeDividedByThree(int result, int added) {
+    public void resultShouldBeDividedByThree(int result, int added) {
         GameRules.addedShouldBeInProperRange(added);
         if ((result + added) % 3 != 0) {
             throw new ValidationException("Result of the move should be divided by 3");
@@ -31,7 +31,7 @@ public class GameRules {
      * Impl. Details: In general from performance perspective it might be not a good idea to check validity by generating
      * exceptions and catching them, but for simplicity of test solution we are using this approach here.
      */
-    boolean isValidMove(int result, int added) {
+    public boolean isValidMove(int result, int added) {
         try {
             GameRules.resultShouldBeDividedByThree(result, added);
             return true;
@@ -45,7 +45,7 @@ public class GameRules {
      * Returns a range of all added values which in general (regardless of the current game result) theoretically could
      * be used for making a new move.
      */
-    IntStream possibleAddedValues() {
+    public IntStream possibleAddedValues() {
         return IntStream.range(MIN_ADDED, MAX_ADDED + 1);
     }
 
@@ -53,7 +53,7 @@ public class GameRules {
      * Decides if a Game could be considered as finished having current result. Normally we're saying that game is
      * finished when the result is 3 / 3 = 1
      */
-    boolean isGameFinished(int result) {
+    public boolean isGameFinished(int result) {
         return result == 1;
     }
 
@@ -63,7 +63,7 @@ public class GameRules {
      * another number which is divided by 3. Meaning a number >= 2 (2 + 1 = 3, 3 + 0 = 3, 4 - 1 = 3, etc). So the final
      * correct range is [1..infinite)
      */
-    void resultShouldBeCorrect(int result) {
+    public void resultShouldBeCorrect(int result) {
         if (result < 1) {
             throw new ValidationException("Result should be more 2 or more");
         }
@@ -73,7 +73,7 @@ public class GameRules {
      * Checks if provided input could be used as a Added value based on rules of the game, meaning if the value is in
      * correct range.
      */
-    void addedShouldBeInProperRange(int added) {
+    public void addedShouldBeInProperRange(int added) {
         if (added < MIN_ADDED || added > MAX_ADDED) {
             throw new ValidationException("An added should be one of [-1,0,1]");
         }

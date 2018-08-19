@@ -40,4 +40,9 @@ public class GameRulesTest {
     public void isValidMove_notDividedByThree() {
         assertThat(GameRules.isValidMove(56, 0)).isFalse();
     }
+
+    @Test
+    public void possibleAddedValues_rangeIncludesMinAndMax() {
+        assertThat(GameRules.possibleAddedValues().toArray()).containsExactlyInAnyOrder(-1, 0, 1);
+    }
 }

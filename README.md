@@ -43,7 +43,9 @@ in web browser.
 
 ### How to run server
 
-The game is a java web application based on spring boot framework. So the App can be started with usuall maven command 
+The game is a java web application based on spring boot framework. So the App can be built using maven command 
+```mvn clean package``` and then started with command
+ 
 ```mvn spring-boot:run```. By default next parameters pre-configured in the app:
 
 - **port=8080** - the port, the application should run on
